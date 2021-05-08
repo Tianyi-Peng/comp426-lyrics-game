@@ -1,0 +1,168 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  user-app
+
+  SAM Template for user-app
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 20
+
+Resources:
+  CreateUserFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: UserFunction
+      Handler: com.typeng.sheets.CreateUser::handleRequest
+      Runtime: java8
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        CreateUser:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /CreateUser
+            Method: post
+  VerifyUserFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: UserFunction
+      Handler: com.typeng.sheets.VerifyUser::handleRequest
+      Runtime: java8
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        VerifyUser:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /VerifyUser
+            Method: post
+  UpdateUserFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: UserFunction
+      Handler: com.typeng.sheets.UpdateUser::handleRequest
+      Runtime: java8
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        UpdateUser:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /UpdateUser
+            Method: post
+  GetUserFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: UserFunction
+      Handler: com.typeng.sheets.GetUser::handleRequest
+      Runtime: java8
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        GetUser:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /GetUser/{username}
+            Method: get
+  GetSongFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: UserFunction
+      Handler: com.typeng.sheets.GetSong::handleRequest
+      Runtime: java8
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        GetSong:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /ws/1.1/track.get
+            Method: get
+  GetLyricsFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: UserFunction
+      Handler: com.typeng.sheets.GetLyrics::handleRequest
+      Runtime: java8
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        GetLyrics:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /ws/1.1/track.lyrics.get
+            Method: get
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  CreateUserApi:
+    Description: "API Gateway endpoint URL for Prod stage for Create User function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/CreateUser/"
+  CreateUserFunction:
+    Description: "CreateUser Lambda Function ARN"
+    Value: !GetAtt CreateUserFunction.Arn
+  CreateUserFunctionIamRole:
+    Description: "Implicit IAM Role created for CreateUserfunction"
+    Value: !GetAtt CreateUserFunctionRole.Arn
+  VerifyUserApi:
+    Description: "API Gateway endpoint URL for Prod stage for Create User function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/VerifyUser/"
+  VerifyUserFunction:
+    Description: "VerifyUser Lambda Function ARN"
+    Value: !GetAtt VerifyUserFunction.Arn
+  VerifyUserFunctionIamRole:
+    Description: "Implicit IAM Role created for VerifyUserfunction"
+    Value: !GetAtt VerifyUserFunctionRole.Arn
+  UpdateUserApi:
+    Description: "API Gateway endpoint URL for Prod stage for Update User function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/UpdateUser/"
+  UpdateUserFunction:
+    Description: "UpdateUser Lambda Function ARN"
+    Value: !GetAtt UpdateUserFunction.Arn
+  UpdateUserFunctionIamRole:
+    Description: "Implicit IAM Role created for UpdateUserfunction"
+    Value: !GetAtt UpdateUserFunctionRole.Arn
+  GetUserApi:
+    Description: "API Gateway endpoint URL for Prod stage for Get User function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/GetUser/"
+  GetUserFunction:
+    Description: "GetUser Lambda Function ARN"
+    Value: !GetAtt GetUserFunction.Arn
+  GetUserFunctionIamRole:
+    Description: "Implicit IAM Role created for GetUserfunction"
+    Value: !GetAtt GetUserFunctionRole.Arn
+  GetSongApi:
+    Description: "API Gateway endpoint URL for Prod stage for Get Song function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod//ws/1.1/track.get"
+  GetSongFunction:
+    Description: "GetUser Lambda Function ARN"
+    Value: !GetAtt GetSongFunction.Arn
+  GetSongFunctionIamRole:
+    Description: "Implicit IAM Role created for GetSongfunction"
+    Value: !GetAtt GetSongFunctionRole.Arn
+  GetLyricsApi:
+    Description: "API Gateway endpoint URL for Prod stage for Get Lyrics function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod//ws/1.1/track.lyrics.get"
+  GetLyricsFunction:
+    Description: "GetUser Lambda Function ARN"
+    Value: !GetAtt GetLyricsFunction.Arn
+  GetLyricsFunctionIamRole:
+    Description: "Implicit IAM Role created for GetLyricsfunction"
+    Value: !GetAtt GetLyricsFunctionRole.Arn    
