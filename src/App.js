@@ -364,7 +364,7 @@ async function UPDATE_USER(u, p, b, h) {
 };
 
 async function CREATE_TWEET(user, score) {
-  let _body = user + " has gotten " + score + " songs correct in a row!";
+  let _body = (user == "" ? "Guest" : user) + " has gotten " + score + " songs correct in a row in Lyrics Trainer!";
   let createdTweet = await axios({
       method: 'post',
       url: 'https://comp426-1fa20.cs.unc.edu/a09/tweets',
