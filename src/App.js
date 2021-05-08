@@ -4,7 +4,6 @@ import "bulma";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSun } from '@fortawesome/free-solid-svg-icons'
 
-// Add button to post high score via my own account on the Comp426 Twitter page
 // To make this more appealing, we could use href and have links to other parts of the website
 export default function AppFrame() {
   let [loginType, setLoginType] = useState(0); // 0 = None, 1 = Sign Up, 2 = Log In
@@ -37,7 +36,7 @@ export default function AppFrame() {
     }
 
     let getChoices = async () => { 
-      let tries = 1; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Set to 10
+      let tries = 10;
       // Fill the array of choices
       let arr = []; 
       for(let i = 0; i < 4; i++){
@@ -98,7 +97,7 @@ export default function AppFrame() {
               </div>
               <div class="navbar-menu">
                 <div class="navbar-end">
-                  <a class="navbar-item">
+                  <a class="navbar-item" onClick={() => {CREATE_TWEET(name, highScore)}}>
                     <div class="content">
                       <p class="heading has-text-primary m-0">High Score</p>
                       <p class="title has-text-primary">{highScore}</p>
@@ -362,4 +361,15 @@ async function UPDATE_USER(u, p, b, h) {
     }
   });
   return result.data.success; 
+};
+
+async function CREATE_TWEET(user, score) {
+  let _body = user + " has gotten " + score + " songs correct in a row!";
+  let createdTweet = await axios({
+      method: 'post',
+      url: 'https://comp426-1fa20.cs.unc.edu/a09/tweets',
+      data: {body: _body}, 
+      withCredentials: true
+  });
+  return createdTweet; 
 };
